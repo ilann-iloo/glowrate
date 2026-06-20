@@ -1,42 +1,70 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ $product->name }} - GlowRate</title>
-</head>
-<body>
-    <nav>
-        <a href="{{ route('home') }}">Beranda</a> |
-        <a href="{{ route('products') }}">Produk</a> |
-        <a href="{{ route('about') }}">Tentang</a>
-    </nav>
+@extends('layouts.public')
 
-    <hr>
+@section('title', $product->name . ' - GlowRate')
 
-    <h1>{{ $product->name }}</h1>
-
-    @if ($product->image)
-        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" width="250">
-    @endif
-
-    <p><strong>Merek:</strong> {{ $product->brand }}</p>
-    <p><strong>Kategori:</strong> {{ $product->category->name ?? '-' }}</p>
-    <p><strong>Harga:</strong> Rp{{ number_format($product->price, 0, ',', '.') }}</p>
-    <p><strong>Deskripsi:</strong></p>
-    <p>{{ $product->description }}</p>
-
-    <hr>
-
-    <h2>Review Produk</h2>
-
-    @forelse ($product->reviews as $review)
-        <div style="border: 1px solid #ddd; padding: 12px; margin-bottom: 10px;">
-            <p><strong>{{ $review->user->name ?? 'User' }}</strong></p>
-            <p>Rating: {{ $review->rating }}/5</p>
-            <p>{{ $review->content }}</p>
+@section('content')
+    <div class="row g-5">
+        <div class="col-lg-5">
+            @if ($product->image)
+                <img 
+                    src="{{ asset('storage/' . $product->image) }}" 
+                    class="img-fluid rounded-4 shadow-sm w-100" 
+                    alt="{{ $product->name }}"
+                >
+            @else
+                <div class="product-placeholder rounded-4">
+                    Tidak Ada Gambar
+                </div>
+            @endif
         </div>
-    @empty
-        <p>Belum ada review aktif untuk produk ini.</p>
-    @endforelse
-</body>
-</html>
+
+        <div class="col-lg-7">
+            <span class="badge badge-category mb-3">
+                {{ $product->category->name ?? 'Tanpa Kategori' }}
+            </span>
+
+            <h1 class="section-title mb-2">{{ $product->name }}</h1>
+
+            <p class="text-muted mb-2">
+                Merek: {{ $product->brand }}
+            </p>
+
+            <h4 class="text-main mb-4">
+                Rp{{ number_format($product->price, 0, ',', '.') }}
+            </h4>
+
+            <h5 class="fw-bold">Deskripsi Produk</h5>
+            <p class="text-muted">
+                {{ $product->description }}
+            </p>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <section>
+        <h3 class="section-title mb-4">Review Produk</h3>
+
+        @forelse ($product->reviews as $review)
+            <div class="bg-white rounded-4 shadow-sm p-4 mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="fw-bold mb-0">
+                        {{ $review->user->name ?? 'User' }}
+                    </h6>
+
+                    <span class="badge badge-category">
+                        Rating {{ $review->rating }}/5
+                    </span>
+                </div>
+
+                <p class="text-muted mb-0">
+                    {{ $review->content }}
+                </p>
+            </div>
+        @empty
+            <div class="alert alert-light border">
+                Belum ada review aktif untuk produk ini.
+            </div>
+        @endforelse
+    </section>
+@endsection

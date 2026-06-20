@@ -1,28 +1,29 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Tentang GlowRate</title>
-</head>
-<body>
-    <h1>Tentang GlowRate</h1>
+@extends('layouts.public')
 
-    <nav>
-        <a href="{{ route('home') }}">Beranda</a> |
-        <a href="{{ route('products') }}">Produk</a> |
-        <a href="{{ route('about') }}">Tentang</a>
-    </nav>
+@section('title', 'Tentang GlowRate')
 
-    <hr>
+@section('content')
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <div class="bg-white rounded-4 shadow-sm p-5">
+                <h1 class="section-title mb-4">Tentang GlowRate</h1>
 
-    <p>
-        GlowRate adalah website review produk skincare dan kosmetik yang membantu pengguna
-        melihat informasi produk, membaca review, dan mengetahui rating produk sebelum membeli.
-    </p>
+                <p class="text-muted">
+                    GlowRate adalah website review produk skincare dan kosmetik yang membantu pengguna
+                    melihat informasi produk, membaca review, dan mengetahui rating produk sebelum membeli.
+                </p>
 
-    <p>
-        Website ini dibuat sebagai project berbasis Laravel dengan fitur CRUD, autentikasi,
-        relasi database, search, pagination, upload gambar, dan moderasi review oleh admin.
-    </p>
-</body>
-</html>
+                <p class="text-muted">
+                    Website ini dibuat untuk menyajikan informasi produk secara lebih terstruktur.
+                    Pengunjung dapat melihat daftar produk, mencari produk, memfilter berdasarkan kategori,
+                    serta membaca review aktif dari pengguna lain.
+                </p>
+
+                <p class="text-muted mb-0">
+                    Dalam project ini, GlowRate menerapkan konsep Laravel, Blade, relasi database,
+                    CRUD, autentikasi, search, pagination, upload gambar, dan moderasi review oleh admin.
+                </p>
+            </div>
+        </div>
+    </div>
+@endsection

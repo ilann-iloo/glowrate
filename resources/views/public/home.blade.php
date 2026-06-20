@@ -1,33 +1,59 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>GlowRate - Beranda</title>
-</head>
-<body>
-    <h1>GlowRate</h1>
-    <p>Temukan review produk skincare dan kosmetik sebelum membeli.</p>
+@extends('layouts.public')
 
-    <nav>
-        <a href="{{ route('home') }}">Beranda</a> |
-        <a href="{{ route('products') }}">Produk</a> |
-        <a href="{{ route('about') }}">Tentang</a>
-    </nav>
+@section('title', 'GlowRate - Beranda')
 
-    <hr>
+@section('content')
+    <section class="hero-section mb-5">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-7">
+                <h1 class="display-5 fw-bold mb-3">
+                    Temukan Review Produk Kecantikan Sebelum Membeli
+                </h1>
 
-    <h2>Produk Terbaru</h2>
+                <p class="lead text-muted mb-4">
+                    GlowRate membantu pengguna melihat informasi produk skincare dan kosmetik,
+                    membaca review, serta mengetahui rating produk secara lebih terstruktur.
+                </p>
 
-    @forelse ($latestProducts as $product)
-        <div style="border: 1px solid #ddd; padding: 12px; margin-bottom: 10px;">
-            <h3>{{ $product->name }}</h3>
-            <p>Merek: {{ $product->brand }}</p>
-            <p>Kategori: {{ $product->category->name ?? '-' }}</p>
-            <p>Harga: Rp{{ number_format($product->price, 0, ',', '.') }}</p>
-            <a href="{{ route('products.detail', $product->id) }}">Lihat Detail</a>
+                <a href="{{ route('products') }}" class="btn btn-main px-4 py-2">
+                    Lihat Produk
+                </a>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="bg-white rounded-4 p-4 shadow-sm">
+                    <h5 class="fw-bold text-main">Apa yang bisa dilakukan?</h5>
+                    <ul class="mb-0 text-muted">
+                        <li>Melihat daftar produk</li>
+                        <li>Mencari produk berdasarkan nama atau merek</li>
+                        <li>Melihat review aktif dari pengguna</li>
+                        <li>Melihat produk berdasarkan kategori</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    @empty
-        <p>Belum ada produk.</p>
-    @endforelse
-</body>
-</html>
+    </section>
+
+    <section>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Produk Terbaru</h2>
+            <a href="{{ route('products') }}" class="btn btn-outline-main btn-sm">
+                Lihat Semua
+            </a>
+        </div>
+
+        <div class="row g-4">
+            @forelse ($latestProducts as $product)
+                <div class="col-md-6 col-lg-4">
+                    @include('partials.product-card', ['product' => $product])
+                </div>
+            @empty
+                <div class="col-12">
+                    <div class="alert alert-light border">
+                        Belum ada produk yang tersedia.
+                    </div>
+                </div>
+            @endforelse
+        </div>
+    </section>
+@endsection

@@ -1,56 +1,64 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>GlowRate - Produk</title>
-</head>
-<body>
-    <h1>Daftar Produk</h1>
+@extends('layouts.public')
 
-    <nav>
-        <a href="{{ route('home') }}">Beranda</a> |
-        <a href="{{ route('products') }}">Produk</a> |
-        <a href="{{ route('about') }}">Tentang</a>
-    </nav>
+@section('title', 'GlowRate - Produk')
 
-    <hr>
+@section('content')
+    <div class="mb-4">
+        <h1 class="section-title">Daftar Produk</h1>
+        <p class="text-muted">
+            Cari produk skincare dan kosmetik berdasarkan nama, merek, atau kategori.
+        </p>
+    </div>
 
-    <form action="{{ route('products') }}" method="GET">
-        <input 
-            type="text" 
-            name="search" 
-            placeholder="Cari produk atau merek..." 
-            value="{{ request('search') }}"
-        >
+    {{-- [PERUBAHAN] Form search dan filter kategori --}}
+    <form action="{{ route('products') }}" method="GET" class="bg-white rounded-4 p-4 shadow-sm mb-4">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <input 
+                    type="text" 
+                    name="search" 
+                    class="form-control"
+                    placeholder="Cari produk atau merek..."
+                    value="{{ request('search') }}"
+                >
+            </div>
 
-        <select name="category">
-            <option value="">Semua Kategori</option>
-            @foreach ($categories as $category)
-                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                    {{ $category->name }}
-                </option>
-            @endforeach
-        </select>
+            <div class="col-md-4">
+                <select name="category" class="form-select">
+                    <option value="">Semua Kategori</option>
 
-        <button type="submit">Cari</button>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-main">
+                    Cari
+                </button>
+            </div>
+        </div>
     </form>
 
-    <hr>
+    <div class="row g-4">
+        @forelse ($products as $product)
+            <div class="col-md-6 col-lg-3">
+                @include('partials.product-card', ['product' => $product])
+            </div>
+        @empty
+            <div class="col-12">
+                <div class="alert alert-light border">
+                    Produk tidak ditemukan.
+                </div>
+            </div>
+        @endforelse
+    </div>
 
-    @forelse ($products as $product)
-        <div style="border: 1px solid #ddd; padding: 12px; margin-bottom: 10px;">
-            <h3>{{ $product->name }}</h3>
-            <p>Merek: {{ $product->brand }}</p>
-            <p>Kategori: {{ $product->category->name ?? '-' }}</p>
-            <p>Harga: Rp{{ number_format($product->price, 0, ',', '.') }}</p>
-            <a href="{{ route('products.detail', $product->id) }}">Lihat Detail</a>
-        </div>
-    @empty
-        <p>Produk tidak ditemukan.</p>
-    @endforelse
-
-    <div>
+    {{-- [PERUBAHAN] Pagination --}}
+    <div class="mt-4">
         {{ $products->links() }}
     </div>
-</body>
-</html>
+@endsection

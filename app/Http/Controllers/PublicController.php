@@ -87,4 +87,14 @@ class PublicController extends Controller
         // [PERUBAHAN] Menampilkan halaman tentang website
         return view('public.about');
     }
+
+    public function categories()
+    {
+        // [PERUBAHAN] Menampilkan semua kategori beserta jumlah produknya
+        $categories = Category::withCount('products')
+            ->latest()
+            ->get();
+
+        return view('public.categories', compact('categories'));
+    }
 }

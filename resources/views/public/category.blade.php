@@ -1,34 +1,30 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Kategori {{ $category->name }} - GlowRate</title>
-</head>
-<body>
-    <h1>Kategori: {{ $category->name }}</h1>
-    <p>{{ $category->description }}</p>
+@extends('layouts.public')
 
-    <nav>
-        <a href="{{ route('home') }}">Beranda</a> |
-        <a href="{{ route('products') }}">Produk</a> |
-        <a href="{{ route('about') }}">Tentang</a>
-    </nav>
+@section('title', 'Kategori ' . $category->name . ' - GlowRate')
 
-    <hr>
+@section('content')
+    <div class="mb-4">
+        <h1 class="section-title">Kategori: {{ $category->name }}</h1>
+        <p class="text-muted">
+            {{ $category->description ?? 'Produk yang tersedia dalam kategori ini.' }}
+        </p>
+    </div>
 
-    @forelse ($products as $product)
-        <div style="border: 1px solid #ddd; padding: 12px; margin-bottom: 10px;">
-            <h3>{{ $product->name }}</h3>
-            <p>Merek: {{ $product->brand }}</p>
-            <p>Harga: Rp{{ number_format($product->price, 0, ',', '.') }}</p>
-            <a href="{{ route('products.detail', $product->id) }}">Lihat Detail</a>
-        </div>
-    @empty
-        <p>Belum ada produk pada kategori ini.</p>
-    @endforelse
+    <div class="row g-4">
+        @forelse ($products as $product)
+            <div class="col-md-6 col-lg-3">
+                @include('partials.product-card', ['product' => $product])
+            </div>
+        @empty
+            <div class="col-12">
+                <div class="alert alert-light border">
+                    Belum ada produk pada kategori ini.
+                </div>
+            </div>
+        @endforelse
+    </div>
 
-    <div>
+    <div class="mt-4">
         {{ $products->links() }}
     </div>
-</body>
-</html>
+@endsection
