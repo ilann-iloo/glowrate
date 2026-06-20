@@ -6,7 +6,7 @@
     <div class="mb-4">
         <h1 class="section-title">Kategori Produk</h1>
         <p class="text-muted">
-            Pilih kategori untuk melihat produk skincare dan kosmetik yang sesuai.
+            Pilih kategori untuk melihat produk skincare dan kosmetik yang tersedia.
         </p>
     </div>
 

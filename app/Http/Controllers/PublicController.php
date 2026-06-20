@@ -77,9 +77,9 @@ class PublicController extends Controller
             ->latest()
             ->paginate(8);
 
-        $categories = Category::latest()->get();
+        // $categories = Category::latest()->get();
 
-        return view('public.category', compact('category', 'products', 'categories'));
+        return view('public.category', compact('category', 'products'));
     }
 
     public function about()

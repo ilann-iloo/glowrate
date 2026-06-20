@@ -22,19 +22,19 @@
 
             <div class="col-lg-5">
                 <div class="bg-white rounded-4 p-4 shadow-sm">
-                    <h5 class="fw-bold text-main">Apa yang bisa dilakukan?</h5>
+                    <h5 class="fw-bold text-main">Fitur Utama</h5>
                     <ul class="mb-0 text-muted">
-                        <li>Melihat daftar produk</li>
+                        <li>Melihat daftar produk skincare dan kosmetik</li>
                         <li>Mencari produk berdasarkan nama atau merek</li>
-                        <li>Melihat review aktif dari pengguna</li>
-                        <li>Melihat produk berdasarkan kategori</li>
+                        <li>Memfilter produk berdasarkan kategori</li>
+                        <li>Membaca review aktif dari pengguna</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section>
+    <section class="mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="section-title mb-0">Produk Terbaru</h2>
             <a href="{{ route('products') }}" class="btn btn-outline-main btn-sm">
@@ -51,6 +51,37 @@
                 <div class="col-12">
                     <div class="alert alert-light border">
                         Belum ada produk yang tersedia.
+                    </div>
+                </div>
+            @endforelse
+        </div>
+    </section>
+
+    <section>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Kategori Produk</h2>
+            <a href="{{ route('categories') }}" class="btn btn-outline-main btn-sm">
+                Lihat Kategori
+            </a>
+        </div>
+
+        <div class="row g-4">
+            @forelse ($categories as $category)
+                <div class="col-md-6 col-lg-3">
+                    <div class="bg-white rounded-4 shadow-sm p-4 h-100">
+                        <h5 class="fw-bold text-main">{{ $category->name }}</h5>
+                        <p class="text-muted small mb-3">
+                            {{ $category->products_count }} produk tersedia
+                        </p>
+                        <a href="{{ route('category', $category->id) }}" class="btn btn-outline-main btn-sm">
+                            Lihat Produk
+                        </a>
+                    </div>
+                </div>
+            @empty
+                <div class="col-12">
+                    <div class="alert alert-light border">
+                        Belum ada kategori.
                     </div>
                 </div>
             @endforelse

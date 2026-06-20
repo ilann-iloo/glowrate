@@ -10,7 +10,6 @@
         </p>
     </div>
 
-    {{-- [PERUBAHAN] Form search dan filter kategori --}}
     <form action="{{ route('products') }}" method="GET" class="bg-white rounded-4 p-4 shadow-sm mb-4">
         <div class="row g-3">
             <div class="col-md-6">
@@ -57,7 +56,6 @@
         @endforelse
     </div>
 
-    {{-- [PERUBAHAN] Pagination --}}
     <div class="mt-4">
         {{ $products->links() }}
     </div>

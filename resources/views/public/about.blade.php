@@ -19,6 +19,11 @@
                     serta membaca review aktif dari pengguna lain.
                 </p>
 
+                <p class="text-muted">
+                    Website ini juga menyediakan halaman admin untuk mengelola data kategori, produk,
+                    upload gambar produk, serta moderasi review agar ulasan yang tampil tetap relevan.
+                </p>
+
                 <p class="text-muted mb-0">
                     Dalam project ini, GlowRate menerapkan konsep Laravel, Blade, relasi database,
                     CRUD, autentikasi, search, pagination, upload gambar, dan moderasi review oleh admin.

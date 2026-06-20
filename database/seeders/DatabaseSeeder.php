@@ -32,9 +32,10 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // [PERUBAHAN] Memanggil seeder user/admin awal
+        // [PERUBAHAN] Seeder akun admin/user
         $this->call([
-        UserSeeder::class,
+            UserSeeder::class,
+            CategoryProductSeeder::class,
         ]);
     }
 }
