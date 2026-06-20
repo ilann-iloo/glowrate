@@ -24,18 +24,19 @@ class PublicController extends Controller
 
     public function products(Request $request)
     {
-        // [PERUBAHAN] Mengambil input pencarian dari query string
-        $search = $request->search;
+        // [PERUBAHAN] Mengambil keyword pencarian dari input user
+        $search = trim($request->get('search'));
 
-        // [PERUBAHAN] Mengambil input kategori dari query string
-        $categoryId = $request->category;
+        // [PERUBAHAN] Mengambil kategori yang dipilih user
+        $categoryId = $request->get('category');
 
+        // [PERUBAHAN] Query produk dibuat fleksibel agar bisa search, filter, dan pagination
         $products = Product::with('category')
             ->when($search, function ($query) use ($search) {
                 // [PERUBAHAN] Search berdasarkan nama produk atau merek
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', '%' . $search . '%')
-                        ->orWhere('brand', 'like', '%' . $search . '%');
+                    ->orWhere('brand', 'like', '%' . $search . '%');
                 });
             })
             ->when($categoryId, function ($query) use ($categoryId) {
@@ -46,9 +47,15 @@ class PublicController extends Controller
             ->paginate(8)
             ->withQueryString();
 
-        $categories = Category::latest()->get();
+        // [PERUBAHAN] Mengambil semua kategori untuk dropdown filter
+        $categories = Category::orderBy('name', 'asc')->get();
 
-        return view('public.products', compact('products', 'categories', 'search', 'categoryId'));
+        return view('public.products', compact(
+            'products',
+            'categories',
+            'search',
+            'categoryId'
+        ));
     }
 
     public function productDetail($id)
@@ -61,7 +68,15 @@ class PublicController extends Controller
                     ->latest()
                     ->with('user');
             }
-        ])->findOrFail($id);
+        ])
+
+            // [PERUBAHAN] Menghitung jumlah review aktif
+            ->withCount('activeReviews')
+
+            // [PERUBAHAN] Menghitung rata-rata rating dari review aktif
+            ->withAvg(['activeReviews as average_rating'], 'rating')
+        
+        ->findOrFail($id);
 
         return view('public.product-detail', compact('product'));
     }
@@ -77,7 +92,7 @@ class PublicController extends Controller
             ->latest()
             ->paginate(8);
 
-        // $categories = Category::latest()->get();
+        $categories = Category::latest()->get();
 
         return view('public.category', compact('category', 'products'));
     }

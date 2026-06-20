@@ -29,9 +29,27 @@
                 Merek: {{ $product->brand }}
             </p>
 
-            <h4 class="text-main mb-4">
+            <h4 class="text-main mb-3">
                 Rp{{ number_format($product->price, 0, ',', '.') }}
             </h4>
+
+            {{-- [PERUBAHAN] Ringkasan rating dari review aktif --}}
+            <div class="bg-white rounded-4 shadow-sm p-3 mb-4">
+                @if ($product->active_reviews_count > 0)
+                    <p class="mb-1 fw-semibold">
+                        Rating Rata-rata:
+                        {{ number_format($product->average_rating, 1) }}/5
+                    </p>
+
+                    <p class="text-muted mb-0">
+                        Berdasarkan {{ $product->active_reviews_count }} review aktif.
+                    </p>
+                @else
+                    <p class="text-muted mb-0">
+                        Produk ini belum memiliki review aktif.
+                    </p>
+                @endif
+            </div>
 
             <h5 class="fw-bold">Deskripsi Produk</h5>
             <p class="text-muted">
@@ -43,14 +61,28 @@
     <hr class="my-5">
 
     <section>
-        <h3 class="section-title mb-4">Review Produk</h3>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="section-title mb-1">Review Produk</h3>
+                <p class="text-muted mb-0">
+                    Review yang ditampilkan hanya review yang sudah disetujui admin.
+                </p>
+            </div>
+        </div>
 
-        @forelse ($product->reviews as $review)
+        {{-- [PERUBAHAN] Hanya menampilkan activeReviews, bukan reviews --}}
+        @forelse ($product->activeReviews as $review)
             <div class="bg-white rounded-4 shadow-sm p-4 mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="fw-bold mb-0">
-                        {{ $review->user->name ?? 'User' }}
-                    </h6>
+                    <div>
+                        <h6 class="fw-bold mb-0">
+                            {{ $review->user->name ?? 'User' }}
+                        </h6>
+
+                        <small class="text-muted">
+                            {{ $review->created_at->format('d M Y') }}
+                        </small>
+                    </div>
 
                     <span class="badge badge-category">
                         Rating {{ $review->rating }}/5

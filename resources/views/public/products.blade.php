@@ -10,38 +10,71 @@
         </p>
     </div>
 
+    {{-- [PERUBAHAN] Form search dan filter kategori --}}
     <form action="{{ route('products') }}" method="GET" class="bg-white rounded-4 p-4 shadow-sm mb-4">
-        <div class="row g-3">
-            <div class="col-md-6">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label for="search" class="form-label fw-semibold">Cari Produk</label>
                 <input 
                     type="text" 
+                    id="search"
                     name="search" 
                     class="form-control"
-                    placeholder="Cari produk atau merek..."
+                    placeholder="Contoh: Wardah, Emina, sunscreen..."
                     value="{{ request('search') }}"
                 >
             </div>
 
             <div class="col-md-4">
-                <select name="category" class="form-select">
+                <label for="category" class="form-label fw-semibold">Filter Kategori</label>
+                <select id="category" name="category" class="form-select">
                     <option value="">Semua Kategori</option>
 
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                        <option 
+                            value="{{ $category->id }}" 
+                            {{ request('category') == $category->id ? 'selected' : '' }}
+                        >
                             {{ $category->name }}
                         </option>
                     @endforeach
                 </select>
             </div>
 
-            <div class="col-md-2 d-grid">
-                <button type="submit" class="btn btn-main">
+            <div class="col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-main flex-fill">
                     Cari
                 </button>
+
+                {{-- [PERUBAHAN] Tombol reset agar search dan filter bisa dikosongkan --}}
+                <a href="{{ route('products') }}" class="btn btn-outline-secondary">
+                    Reset
+                </a>
             </div>
         </div>
     </form>
 
+    {{-- [PERUBAHAN] Informasi hasil pencarian/filter --}}
+    @if (request('search') || request('category'))
+        <div class="alert alert-light border mb-4">
+            Menampilkan hasil
+            @if (request('search'))
+                untuk pencarian <strong>"{{ request('search') }}"</strong>
+            @endif
+
+            @if (request('category'))
+                @php
+                    $selectedCategory = $categories->firstWhere('id', request('category'));
+                @endphp
+
+                @if ($selectedCategory)
+                    pada kategori <strong>{{ $selectedCategory->name }}</strong>
+                @endif
+            @endif
+        </div>
+    @endif
+
+    {{-- [PERUBAHAN] Daftar produk --}}
     <div class="row g-4">
         @forelse ($products as $product)
             <div class="col-md-6 col-lg-3">
@@ -56,7 +89,10 @@
         @endforelse
     </div>
 
-    <div class="mt-4">
-        {{ $products->links() }}
-    </div>
+    {{-- [PERUBAHAN] Pagination produk --}}
+    @if ($products->hasPages())
+        <div class="mt-4">
+            {{ $products->links() }}
+        </div>
+    @endif
 @endsection

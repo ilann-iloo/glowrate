@@ -6,7 +6,7 @@ use App\Http\Controllers\PublicController;
 // [PERUBAHAN] Halaman beranda
 Route::get('/', [PublicController::class, 'home'])->name('home');
 
-// [PERUBAHAN] Halaman daftar produk
+// [PERUBAHAN] Halaman daftar produk dengan search, pagination, dan filter kategori
 Route::get('/produk', [PublicController::class, 'products'])->name('products');
 
 // [PERUBAHAN] Halaman daftar kategori
