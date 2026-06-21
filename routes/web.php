@@ -5,6 +5,10 @@ use App\Http\Controllers\PublicController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+
 // =======================
 // Route Halaman Publik
 // =======================
@@ -49,5 +53,19 @@ Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+        // [PERUBAHAN] Route dashboard admin
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        // [PERUBAHAN] Route resource untuk CRUD kategori
+        Route::resource('/categories', CategoryController::class);
+
+        // [PERUBAHAN] Route resource untuk CRUD produk
+        Route::resource('/products', ProductController::class);
+
+        // [PERUBAHAN] Route resource review dibatasi karena admin hanya mengelola review
+        Route::resource('/reviews', AdminReviewController::class)->only([
+            'index',
+            'update',
+            'destroy',
+        ]);
     });

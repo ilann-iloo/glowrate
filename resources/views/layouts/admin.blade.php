@@ -26,16 +26,15 @@
                     Dashboard
                 </a>
 
-                {{-- [PERUBAHAN] Link ini nanti aktif setelah route CRUD dibuat oleh bagian Pota --}}
-                <a href="#" class="">
+                <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                     Kelola Kategori
                 </a>
 
-                <a href="#" class="">
+                <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
                     Kelola Produk
                 </a>
 
-                <a href="#" class="">
+                <a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
                     Kelola Review
                 </a>
 
