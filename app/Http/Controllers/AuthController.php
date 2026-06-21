@@ -12,7 +12,11 @@ class AuthController extends Controller
 {
     public function showLogin()
     {
-        // [PERUBAHAN] Menampilkan halaman login
+        // [PERUBAHAN] Jika sudah login, arahkan sesuai role
+        if (Auth::check()) {
+            return $this->redirectByRole();
+        }
+
         return view('auth.login');
     }
 
@@ -24,17 +28,11 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        // [PERUBAHAN] Proses autentikasi user/admin
+        // [PERUBAHAN] Proses login menggunakan Auth Laravel
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            // [PERUBAHAN] Arahkan admin ke dashboard admin
-            if (Auth::user()->role === 'admin') {
-                return redirect()->route('admin.dashboard');
-            }
-
-            // [PERUBAHAN] Arahkan user biasa ke beranda
-            return redirect()->route('home');
+            return $this->redirectByRole();
         }
 
         return back()
@@ -46,7 +44,11 @@ class AuthController extends Controller
 
     public function showRegister()
     {
-        // [PERUBAHAN] Menampilkan halaman register
+        // [PERUBAHAN] Jika sudah login, arahkan sesuai role
+        if (Auth::check()) {
+            return $this->redirectByRole();
+        }
+
         return view('auth.register');
     }
 
@@ -59,7 +61,7 @@ class AuthController extends Controller
             'password' => ['required', 'min:6', 'confirmed'],
         ]);
 
-        // [PERUBAHAN] Membuat akun user baru
+        // [PERUBAHAN] Membuat akun baru dengan role user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -76,12 +78,26 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        // [PERUBAHAN] Logout dan hapus session
+        // [PERUBAHAN] Logout user/admin
         Auth::logout();
 
+        // [PERUBAHAN] Menghapus session lama
         $request->session()->invalidate();
+
+        // [PERUBAHAN] Membuat ulang token CSRF
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
+    }
+
+    private function redirectByRole()
+    {
+        // [PERUBAHAN] Admin masuk ke dashboard admin
+        if (Auth::user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        // [PERUBAHAN] User biasa kembali ke beranda
+        return redirect()->route('home');
     }
 }

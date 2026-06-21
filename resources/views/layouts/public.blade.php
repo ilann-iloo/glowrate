@@ -51,11 +51,33 @@
                         </a>
                     </li>
 
-                    <li class="nav-item ms-lg-2">
-                        <a class="btn btn-main btn-sm px-3" href="{{ url('/login') }}">
-                            Login
-                        </a>
-                    </li>
+                    {{-- [PERUBAHAN] Tombol auth berubah sesuai status login --}}
+                    @guest
+                        <li class="nav-item ms-lg-2">
+                            <a class="btn btn-main btn-sm px-3" href="{{ route('login') }}">
+                                Login
+                            </a>
+                        </li>
+                    @endguest
+
+                    @auth
+                        @if (auth()->user()->role === 'admin')
+                            <li class="nav-item ms-lg-2">
+                                <a class="btn btn-main btn-sm px-3" href="{{ route('admin.dashboard') }}">
+                                    Dashboard
+                                </a>
+                            </li>
+                        @endif
+
+                        <li class="nav-item">
+                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-outline-main btn-sm px-3">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    @endauth
                 </ul>
             </div>
         </div>

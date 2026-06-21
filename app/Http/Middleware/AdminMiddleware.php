@@ -24,7 +24,8 @@ class AdminMiddleware
 
         // [PERUBAHAN] Jika login tetapi bukan admin, kembalikan ke beranda
         if (Auth::user()->role !== 'admin') {
-            return redirect()->route('home');
+            return redirect()->route('home')
+                ->with('error', 'Anda tidak memiliki akses ke halaman admin.');
         }
 
         return $next($request);
