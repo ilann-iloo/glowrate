@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -32,7 +33,19 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // [PERUBAHAN] Logic tambah kategori akan dibuat pada tahap CRUD
+        $request->validate([
+            'name' => 'required|max:255',
+            'description' => 'nullable',
+        ]);
+
+        Category::create([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return redirect()
+            ->route('admin.categories.index')
+            ->with('success', 'Kategori berhasil ditambahkan');
     }
 
     /**
@@ -49,7 +62,12 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        // [PERUBAHAN] Form edit kategori akan dibuat pada tahap CRUD
+        $category = Category::findOrFail($id);
+
+        return view(
+            'admin.categories.edit',
+            compact('category')
+        );
     }
 
     /**
@@ -57,14 +75,40 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // [PERUBAHAN] Logic update kategori akan dibuat pada tahap CRUD
+        $request->validate([
+            'name' => 'required|max:255',
+            'description' => 'nullable',
+        ]);
+
+        $category = Category::findOrFail($id);
+
+        $category->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return redirect()
+            ->route('admin.categories.index')
+            ->with('success', 'Kategori berhasil diperbarui');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        // [PERUBAHAN] Logic hapus kategori akan dibuat pada tahap CRUD
+public function destroy(string $id)
+{
+    $category = Category::findOrFail($id);
+
+    if ($category->products()->count() > 0) {
+        return redirect()
+            ->route('admin.categories.index')
+            ->with('error', 'Kategori masih memiliki produk.');
     }
+
+    $category->delete();
+
+    return redirect()
+        ->route('admin.categories.index')
+        ->with('success', 'Kategori berhasil dihapus.');
+}
 }

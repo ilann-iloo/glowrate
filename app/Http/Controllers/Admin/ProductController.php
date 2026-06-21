@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -38,7 +39,34 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // [PERUBAHAN] Logic tambah produk dan upload gambar akan dibuat pada tahap CRUD
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|max:255',
+            'brand' => 'required|max:255',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')
+                ->store('products', 'public');
+        }
+
+        Product::create([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'brand' => $request->brand,
+            'price' => $request->price,
+            'description' => $request->description,
+            'image' => $imagePath,
+        ]);
+
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success', 'Produk berhasil ditambahkan.');
     }
 
     /**
@@ -55,15 +83,56 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        // [PERUBAHAN] Form edit produk akan dibuat pada tahap CRUD
+        $product = Product::findOrFail($id);
+
+        $categories = Category::orderBy('name')->get();
+
+        return view(
+            'admin.products.edit',
+            compact('product', 'categories')
+        );
     }
 
     /**
      * Update the specified resource in storage.
-     */
+         */
     public function update(Request $request, string $id)
     {
-        // [PERUBAHAN] logic update produk akan dibuat pada tahap CRUD
+        $product = Product::findOrFail($id);
+
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|max:255',
+            'brand' => 'required|max:255',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        $imagePath = $product->image;
+
+        if ($request->hasFile('image')) {
+
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+
+            $imagePath = $request->file('image')
+                ->store('products', 'public');
+        }
+
+        $product->update([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'brand' => $request->brand,
+            'price' => $request->price,
+            'description' => $request->description,
+            'image' => $imagePath,
+        ]);
+
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success', 'Produk berhasil diperbarui.');
     }
 
     /**
@@ -71,6 +140,16 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        // [PERUBAHAN] Logic hapus produk akan dibuat pada tahap CRUD
+        $product = Product::findOrFail($id);
+
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+
+        $product->delete();
+
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success', 'Produk berhasil dihapus.');
     }
 }
