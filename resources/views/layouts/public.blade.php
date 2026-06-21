@@ -85,6 +85,19 @@
 
     {{-- [PERUBAHAN] Konten utama --}}
     <main class="container py-5">
+        {{-- [PERUBAHAN] Menampilkan pesan error/success dari session --}}
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         @yield('content')
     </main>
 

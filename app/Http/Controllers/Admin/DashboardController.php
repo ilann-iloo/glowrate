@@ -11,18 +11,27 @@ use App\Models\User;
 
 class DashboardController extends Controller
 {
-    //
     public function index()
     {
-        // [PERUBAHAN] Menghitung data untuk ringkasan dashboard admin
+        // [PERUBAHAN] Menghitung jumlah user biasa
         $totalUsers = User::where('role', 'user')->count();
+
+        // [PERUBAHAN] Menghitung jumlah kategori
         $totalCategories = Category::count();
+
+        // [PERUBAHAN] Menghitung jumlah produk
         $totalProducts = Product::count();
+
+        // [PERUBAHAN] Menghitung jumlah seluruh review
         $totalReviews = Review::count();
-        $pendingReviews = Review::where('status', 'Nonaktif')->count();
+
+        // [PERUBAHAN] Menghitung review aktif
         $activeReviews = Review::where('status', 'Aktif')->count();
 
-        // [PERUBAHAN] Mengambil review terbaru untuk ditampilkan di dashboard
+        // [PERUBAHAN] Menghitung review nonaktif yang perlu dimoderasi
+        $pendingReviews = Review::where('status', 'Nonaktif')->count();
+
+        // [PERUBAHAN] Mengambil 5 review terbaru
         $latestReviews = Review::with(['user', 'product'])
             ->latest()
             ->take(5)
@@ -33,8 +42,8 @@ class DashboardController extends Controller
             'totalCategories',
             'totalProducts',
             'totalReviews',
-            'pendingReviews',
             'activeReviews',
+            'pendingReviews',
             'latestReviews'
         ));
     }

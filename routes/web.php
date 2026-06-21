@@ -44,7 +44,7 @@ Route::post('/logout', [AuthController::class, 'logout'])
 // Route Admin
 // =======================
 
-// [PERUBAHAN] Dashboard admin hanya bisa diakses admin
+// [PERUBAHAN] Route admin hanya bisa diakses oleh user yang login dan memiliki role admin
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')

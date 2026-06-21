@@ -62,14 +62,14 @@
 
         <div class="col-md-6">
             <div class="soft-card">
-                <h5 class="fw-bold mb-3">Informasi Admin</h5>
+                <h5 class="fw-bold mb-3">Proteksi Role Admin</h5>
 
                 <p class="text-muted mb-2">
-                    Dashboard ini digunakan untuk memantau jumlah user, kategori, produk, dan review.
+                    Halaman ini hanya dapat diakses oleh akun dengan role admin.
                 </p>
 
                 <p class="text-muted mb-0">
-                    Review berstatus Nonaktif perlu dimoderasi sebelum tampil di halaman detail produk.
+                    User biasa akan dikembalikan ke halaman beranda jika mencoba membuka dashboard admin.
                 </p>
             </div>
         </div>
@@ -113,7 +113,9 @@
                                     </span>
                                 @endif
                             </td>
-                            <td>{{ \Illuminate\Support\Str::limit($review->content, 60) }}</td>
+                            <td>
+                                {{ \Illuminate\Support\Str::limit($review->content, 60) }}
+                            </td>
                         </tr>
                     @empty
                         <tr>

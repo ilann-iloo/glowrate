@@ -28,6 +28,7 @@ class AdminMiddleware
                 ->with('error', 'Anda tidak memiliki akses ke halaman admin.');
         }
 
+        // [PERUBAHAN] Jika role admin, lanjutkan request
         return $next($request);
     }
 }
