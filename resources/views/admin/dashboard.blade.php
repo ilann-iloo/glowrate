@@ -1,29 +1,129 @@
-<h1>Dashboard Admin GlowRate</h1>
+@extends('layouts.admin')
 
-<p>Total User: {{ $totalUsers }}</p>
-<p>Total Kategori: {{ $totalCategories }}</p>
-<p>Total Produk: {{ $totalProducts }}</p>
-<p>Total Review: {{ $totalReviews }}</p>
-<p>Review Aktif: {{ $activeReviews }}</p>
-<p>Review Nonaktif: {{ $pendingReviews }}</p>
+@section('title', 'Dashboard Admin - GlowRate')
 
-<form action="{{ route('logout') }}" method="POST">
-    @csrf
-    <button type="submit">Logout</button>
-</form>
+@section('page-title', 'Dashboard Admin')
 
-<hr>
+@section('content')
+    <div class="row g-4 mb-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <p class="text-muted mb-1">Total User</p>
+                <div class="stat-number">{{ $totalUsers }}</div>
+                <small class="text-muted">User terdaftar</small>
+            </div>
+        </div>
 
-<h2>Review Terbaru</h2>
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <p class="text-muted mb-1">Total Kategori</p>
+                <div class="stat-number">{{ $totalCategories }}</div>
+                <small class="text-muted">Kategori produk</small>
+            </div>
+        </div>
 
-@forelse ($latestReviews as $review)
-    <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 8px;">
-        <p><strong>Produk:</strong> {{ $review->product->name ?? '-' }}</p>
-        <p><strong>User:</strong> {{ $review->user->name ?? '-' }}</p>
-        <p><strong>Rating:</strong> {{ $review->rating }}/5</p>
-        <p><strong>Status:</strong> {{ $review->status }}</p>
-        <p>{{ $review->content }}</p>
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <p class="text-muted mb-1">Total Produk</p>
+                <div class="stat-number">{{ $totalProducts }}</div>
+                <small class="text-muted">Produk tersedia</small>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <p class="text-muted mb-1">Total Review</p>
+                <div class="stat-number">{{ $totalReviews }}</div>
+                <small class="text-muted">Review masuk</small>
+            </div>
+        </div>
     </div>
-@empty
-    <p>Belum ada review.</p>
-@endforelse
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="soft-card">
+                <h5 class="fw-bold mb-3">Status Review</h5>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span>Review Aktif</span>
+                    <span class="badge badge-soft-active px-3 py-2">
+                        {{ $activeReviews }}
+                    </span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>Review Nonaktif</span>
+                    <span class="badge badge-soft-pending px-3 py-2">
+                        {{ $pendingReviews }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="soft-card">
+                <h5 class="fw-bold mb-3">Informasi Admin</h5>
+
+                <p class="text-muted mb-2">
+                    Dashboard ini digunakan untuk memantau jumlah user, kategori, produk, dan review.
+                </p>
+
+                <p class="text-muted mb-0">
+                    Review berstatus Nonaktif perlu dimoderasi sebelum tampil di halaman detail produk.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="soft-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h5 class="fw-bold mb-1">Review Terbaru</h5>
+                <p class="text-muted mb-0">
+                    Daftar review terakhir yang masuk ke sistem.
+                </p>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Produk</th>
+                        <th>Rating</th>
+                        <th>Status</th>
+                        <th>Isi Review</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($latestReviews as $review)
+                        <tr>
+                            <td>{{ $review->user->name ?? '-' }}</td>
+                            <td>{{ $review->product->name ?? '-' }}</td>
+                            <td>{{ $review->rating }}/5</td>
+                            <td>
+                                @if ($review->status === 'Aktif')
+                                    <span class="badge badge-soft-active">
+                                        Aktif
+                                    </span>
+                                @else
+                                    <span class="badge badge-soft-pending">
+                                        Nonaktif
+                                    </span>
+                                @endif
+                            </td>
+                            <td>{{ \Illuminate\Support\Str::limit($review->content, 60) }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                Belum ada review.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endsection
