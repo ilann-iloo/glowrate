@@ -134,7 +134,7 @@ class ProductController extends Controller
             ->route('admin.products.index')
             ->with('success', 'Produk berhasil diperbarui.');
     }
-
+  
     /**
      * Remove the specified resource from storage.
      */

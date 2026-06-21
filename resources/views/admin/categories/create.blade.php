@@ -35,7 +35,7 @@
            class="btn btn-secondary">
             Kembali
         </a>
-    </form>
+    </form> 
 
 </div>
-@endsection
+@endsection 
