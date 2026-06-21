@@ -13,28 +13,28 @@
     <div class="row g-4">
         @forelse ($categories as $category)
             <div class="col-md-6 col-lg-4">
-                <div class="card border-0 rounded-4 shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="fw-bold text-main">{{ $category->name }}</h5>
+                <div class="soft-card p-4 h-100">
+                    <h5 class="fw-bold text-main">
+                        {{ $category->name }}
+                    </h5>
 
-                        <p class="text-muted">
-                            {{ $category->description ?? 'Belum ada deskripsi kategori.' }}
-                        </p>
+                    <p class="text-muted">
+                        {{ $category->description ?? 'Belum ada deskripsi kategori.' }}
+                    </p>
 
-                        <p class="small text-muted">
-                            {{ $category->products_count }} produk tersedia
-                        </p>
+                    <p class="small text-muted">
+                        {{ $category->products_count }} produk tersedia
+                    </p>
 
-                        <a href="{{ route('category', $category->id) }}" class="btn btn-outline-main btn-sm">
-                            Lihat Produk
-                        </a>
-                    </div>
+                    <a href="{{ route('category', $category->id) }}" class="btn btn-outline-main btn-sm">
+                        Lihat Produk
+                    </a>
                 </div>
             </div>
         @empty
             <div class="col-12">
-                <div class="alert alert-light border">
-                    Belum ada kategori.
+                <div class="empty-state">
+                    Belum ada kategori yang tersedia.
                 </div>
             </div>
         @endforelse

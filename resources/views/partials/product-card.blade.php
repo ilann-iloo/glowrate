@@ -1,15 +1,15 @@
 <div class="card product-card">
     @if ($product->image)
-        {{-- [PERUBAHAN] Menampilkan gambar produk dari storage --}}
+        {{-- [PERUBAHAN] Menampilkan gambar produk --}}
         <img 
             src="{{ asset('storage/' . $product->image) }}" 
             class="card-img-top product-image" 
             alt="{{ $product->name }}"
         >
     @else
-        {{-- [PERUBAHAN] Placeholder jika produk belum punya gambar --}}
+        {{-- [PERUBAHAN] Placeholder saat produk belum punya gambar --}}
         <div class="product-placeholder">
-            Tidak Ada Gambar
+            GlowRate Product
         </div>
     @endif
 
@@ -20,13 +20,15 @@
             </span>
         </div>
 
-        <h5 class="card-title mb-1">{{ $product->name }}</h5>
+        <h5 class="card-title mb-1">
+            {{ $product->name }}
+        </h5>
 
         <p class="text-muted mb-2">
             {{ $product->brand }}
         </p>
 
-        <p class="fw-semibold mb-3">
+        <p class="price-text mb-3">
             Rp{{ number_format($product->price, 0, ',', '.') }}
         </p>
 

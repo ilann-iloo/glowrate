@@ -4,6 +4,10 @@
 
 @section('content')
     <div class="mb-4">
+        <a href="{{ route('categories') }}" class="btn btn-outline-main btn-sm mb-3">
+            Kembali ke Kategori
+        </a>
+
         <h1 class="section-title">Kategori: {{ $category->name }}</h1>
         <p class="text-muted">
             {{ $category->description ?? 'Produk yang tersedia dalam kategori ini.' }}
@@ -17,14 +21,16 @@
             </div>
         @empty
             <div class="col-12">
-                <div class="alert alert-light border">
+                <div class="empty-state">
                     Belum ada produk pada kategori ini.
                 </div>
             </div>
         @endforelse
     </div>
 
-    <div class="mt-4">
-        {{ $products->links() }}
-    </div>
+    @if ($products->hasPages())
+        <div class="mt-4">
+            {{ $products->links() }}
+        </div>
+    @endif
 @endsection

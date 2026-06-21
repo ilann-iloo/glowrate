@@ -10,8 +10,7 @@
         </p>
     </div>
 
-    {{-- [PERUBAHAN] Form search dan filter kategori --}}
-    <form action="{{ route('products') }}" method="GET" class="bg-white rounded-4 p-4 shadow-sm mb-4">
+    <form action="{{ route('products') }}" method="GET" class="soft-card p-4 mb-4">
         <div class="row g-3 align-items-end">
             <div class="col-md-5">
                 <label for="search" class="form-label fw-semibold">Cari Produk</label>
@@ -46,7 +45,6 @@
                     Cari
                 </button>
 
-                {{-- [PERUBAHAN] Tombol reset agar search dan filter bisa dikosongkan --}}
                 <a href="{{ route('products') }}" class="btn btn-outline-secondary">
                     Reset
                 </a>
@@ -54,7 +52,6 @@
         </div>
     </form>
 
-    {{-- [PERUBAHAN] Informasi hasil pencarian/filter --}}
     @if (request('search') || request('category'))
         <div class="alert alert-light border mb-4">
             Menampilkan hasil
@@ -74,7 +71,6 @@
         </div>
     @endif
 
-    {{-- [PERUBAHAN] Daftar produk --}}
     <div class="row g-4">
         @forelse ($products as $product)
             <div class="col-md-6 col-lg-3">
@@ -82,14 +78,13 @@
             </div>
         @empty
             <div class="col-12">
-                <div class="alert alert-light border">
-                    Produk tidak ditemukan.
+                <div class="empty-state">
+                    Produk tidak ditemukan. Coba gunakan kata kunci atau kategori lain.
                 </div>
             </div>
         @endforelse
     </div>
 
-    {{-- [PERUBAHAN] Pagination produk --}}
     @if ($products->hasPages())
         <div class="mt-4">
             {{ $products->links() }}

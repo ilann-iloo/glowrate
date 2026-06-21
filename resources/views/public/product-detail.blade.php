@@ -3,6 +3,10 @@
 @section('title', $product->name . ' - GlowRate')
 
 @section('content')
+    <a href="{{ route('products') }}" class="btn btn-outline-main btn-sm mb-4">
+        Kembali ke Produk
+    </a>
+
     <div class="row g-5">
         <div class="col-lg-5">
             @if ($product->image)
@@ -13,7 +17,7 @@
                 >
             @else
                 <div class="product-placeholder rounded-4">
-                    Tidak Ada Gambar
+                    GlowRate Product
                 </div>
             @endif
         </div>
@@ -23,18 +27,19 @@
                 {{ $product->category->name ?? 'Tanpa Kategori' }}
             </span>
 
-            <h1 class="section-title mb-2">{{ $product->name }}</h1>
+            <h1 class="section-title mb-2">
+                {{ $product->name }}
+            </h1>
 
             <p class="text-muted mb-2">
                 Merek: {{ $product->brand }}
             </p>
 
-            <h4 class="text-main mb-3">
+            <h4 class="price-text mb-4">
                 Rp{{ number_format($product->price, 0, ',', '.') }}
             </h4>
 
-            {{-- [PERUBAHAN] Ringkasan rating dari review aktif --}}
-            <div class="bg-white rounded-4 shadow-sm p-3 mb-4">
+            <div class="soft-card p-4 mb-4">
                 @if ($product->active_reviews_count > 0)
                     <p class="mb-1 fw-semibold">
                         Rating Rata-rata:
@@ -61,18 +66,15 @@
     <hr class="my-5">
 
     <section>
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h3 class="section-title mb-1">Review Produk</h3>
-                <p class="text-muted mb-0">
-                    Review yang ditampilkan hanya review yang sudah disetujui admin.
-                </p>
-            </div>
+        <div class="mb-4">
+            <h3 class="section-title mb-1">Review Produk</h3>
+            <p class="text-muted mb-0">
+                Review yang ditampilkan hanya review yang sudah disetujui admin.
+            </p>
         </div>
 
-        {{-- [PERUBAHAN] Hanya menampilkan activeReviews, bukan reviews --}}
         @forelse ($product->activeReviews as $review)
-            <div class="bg-white rounded-4 shadow-sm p-4 mb-3">
+            <div class="soft-card p-4 mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div>
                         <h6 class="fw-bold mb-0">
@@ -94,7 +96,7 @@
                 </p>
             </div>
         @empty
-            <div class="alert alert-light border">
+            <div class="empty-state">
                 Belum ada review aktif untuk produk ini.
             </div>
         @endforelse
