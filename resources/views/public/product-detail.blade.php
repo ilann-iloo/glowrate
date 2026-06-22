@@ -65,6 +65,70 @@
 
     <hr class="my-5">
 
+    @auth
+    <div class="soft-card p-4 mb-5">
+        <h4 class="mb-3">Tulis Review</h4>
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('reviews.store', $product->id) }}" method="POST">
+            @csrf
+
+            <div class="mb-3">
+                <label class="form-label">Rating</label>
+
+                <select name="rating" class="form-control" required>
+                    <option value="">Pilih Rating</option>
+                    <option value="1">1 Bintang</option>
+                    <option value="2">2 Bintang</option>
+                    <option value="3">3 Bintang</option>
+                    <option value="4">4 Bintang</option>
+                    <option value="5">5 Bintang</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Review</label>
+
+                <textarea
+                    name="content"
+                    class="form-control"
+                    rows="4"
+                    required
+                ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Kirim Review
+            </button>
+        </form>
+    </div>
+    @endauth
+
+    @guest
+    <div class="alert alert-warning mb-5">
+        Silakan login terlebih dahulu untuk memberikan review.
+    </div>
+
+    <a href="{{ route('login') }}" class="btn btn-outline-primary mb-5">
+        Login
+    </a>
+    @endguest
+
     <section>
         <div class="mb-4">
             <h3 class="section-title mb-1">Review Produk</h3>

@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\ReviewController;
 
 // =======================
 // Route Halaman Publik
@@ -43,6 +44,18 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
+// =======================
+// Route Review User
+// =======================
+
+Route::middleware('auth')->group(function () {
+
+    Route::post(
+        '/products/{product}/review',
+        [ReviewController::class, 'store']
+    )->name('reviews.store');
+
+});
 
 // =======================
 // Route Admin
