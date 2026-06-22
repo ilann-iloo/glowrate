@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Tambah Produk - GlowRate')
+@section('title', 'Edit Produk - GlowRate')
 
-@section('page-title', 'Tambah Produk')
+@section('page-title', 'Edit Produk')
 
 @section('content')
 <div class="soft-card">
 
     <h4 class="fw-bold mb-4">
-        Tambah Produk
+        Edit Produk
     </h4>
 
     @if ($errors->any())
@@ -22,11 +22,12 @@
     @endif
 
     <form
-        action="{{ route('admin.products.store') }}"
+        action="{{ route('admin.products.update', $product->id) }}"
         method="POST"
         enctype="multipart/form-data"
     >
         @csrf
+        @method('PUT')
 
         <div class="mb-3">
             <label class="form-label">Kategori</label>
@@ -36,10 +37,11 @@
                 class="form-control"
                 required
             >
-                <option value="">Pilih Kategori</option>
-
                 @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">
+                    <option
+                        value="{{ $category->id }}"
+                        {{ $product->category_id == $category->id ? 'selected' : '' }}
+                    >
                         {{ $category->name }}
                     </option>
                 @endforeach
@@ -53,7 +55,7 @@
                 type="text"
                 name="name"
                 class="form-control"
-                value="{{ old('name') }}"
+                value="{{ old('name', $product->name) }}"
                 required
             >
         </div>
@@ -65,7 +67,7 @@
                 type="text"
                 name="brand"
                 class="form-control"
-                value="{{ old('brand') }}"
+                value="{{ old('brand', $product->brand) }}"
                 required
             >
         </div>
@@ -77,7 +79,7 @@
                 type="number"
                 name="price"
                 class="form-control"
-                value="{{ old('price') }}"
+                value="{{ old('price', $product->price) }}"
                 required
             >
         </div>
@@ -90,11 +92,23 @@
                 rows="5"
                 class="form-control"
                 required
-            >{{ old('description') }}</textarea>
+            >{{ old('description', $product->description) }}</textarea>
         </div>
 
+        @if ($product->image)
+            <div class="mb-3">
+                <img
+                    src="{{ asset('storage/' . $product->image) }}"
+                    width="150"
+                    class="img-thumbnail"
+                >
+            </div>
+        @endif
+
         <div class="mb-4">
-            <label class="form-label">Gambar Produk</label>
+            <label class="form-label">
+                Ganti Gambar
+            </label>
 
             <input
                 type="file"
@@ -105,9 +119,9 @@
 
         <button
             type="submit"
-            class="btn btn-primary"
+            class="btn btn-warning"
         >
-            Simpan Produk
+            Update Produk
         </button>
 
     </form>
