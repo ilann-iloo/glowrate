@@ -5,10 +5,19 @@
 @section('content')
     <div class="auth-card">
         <div class="text-center mb-4">
+
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <div class="auth-logo">GlowRate</div>
+
             <p class="text-muted mb-0">
                 Buat akun untuk menambahkan review produk.
             </p>
+
         </div>
 
         @if ($errors->any())

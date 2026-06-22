@@ -4,8 +4,16 @@
 
 @section('content')
     <div class="auth-card">
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="text-center mb-4">
             <div class="auth-logo">GlowRate</div>
+
             <p class="text-muted mb-0">
                 Masuk untuk melanjutkan ke akun Anda.
             </p>
