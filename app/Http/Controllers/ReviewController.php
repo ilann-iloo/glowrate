@@ -28,4 +28,20 @@ class ReviewController extends Controller
             'Review berhasil dikirim dan menunggu persetujuan admin.'
         );
     }
+
+    public function toggleStatus($id)
+{
+    $review = \App\Models\Review::findOrFail($id);
+
+    if ($review->status === 'Aktif') {
+        $review->status = 'Nonaktif';
+    } else {
+        $review->status = 'Aktif';
+    }
+
+    $review->save();
+
+    return redirect()->back()
+        ->with('success', 'Status review berhasil diubah');
+}
 }

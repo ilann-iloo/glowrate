@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -11,7 +12,7 @@ use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\ReviewController;
 
 // =======================
-// Route Halaman Publik
+// PUBLIC ROUTES
 // =======================
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
@@ -28,57 +29,79 @@ Route::get('/tentang', [PublicController::class, 'about'])->name('about');
 
 
 // =======================
-// Route Auth
+// AUTH ROUTES
 // =======================
 
-// [PERUBAHAN] Login
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 
-// [PERUBAHAN] Register
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.process');
 
-// [PERUBAHAN] Logout hanya bisa dilakukan user yang sudah login
 Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
+
 // =======================
-// Route Review User
+// USER REVIEW ROUTE
 // =======================
 
 Route::middleware('auth')->group(function () {
 
-    Route::post(
-        '/products/{product}/review',
-        [ReviewController::class, 'store']
-    )->name('reviews.store');
+    Route::post('/products/{product}/review', [ReviewController::class, 'store'])
+        ->name('reviews.store');
 
 });
 
+
 // =======================
-// Route Admin
+// ADMIN ROUTES
 // =======================
 
-// [PERUBAHAN] Route admin hanya bisa diakses oleh user yang login dan memiliki role admin
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        // [PERUBAHAN] Route dashboard admin
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        // [PERUBAHAN] Route resource untuk CRUD kategori
+        // DASHBOARD
+        Route::get('/dashboard', [DashboardController::class, 'index'])
+            ->name('dashboard');
+
+        // CATEGORY CRUD
         Route::resource('/categories', CategoryController::class);
 
-        // [PERUBAHAN] Route resource untuk CRUD produk
+        // PRODUCT CRUD
         Route::resource('/products', ProductController::class);
 
-        // [PERUBAHAN] Route resource review dibatasi karena admin hanya mengelola review
-        Route::resource('/reviews', AdminReviewController::class)->only([
-            'index',
-            'update',
-            'destroy',
-        ]);
+        // REVIEW MANAGEMENT
+        Route::get('/reviews', [AdminReviewController::class, 'index'])
+            ->name('reviews.index');
+
+        Route::get('/reviews/toggle/{id}', [AdminReviewController::class, 'toggleStatus'])
+            ->name('reviews.toggle');
+
+        Route::delete('/reviews/{id}', [AdminReviewController::class, 'destroy'])
+            ->name('reviews.destroy');
+
+        Route::get('/reviews/{id}/edit', [AdminReviewController::class, 'edit'])
+        ->name('reviews.edit');
+
+        Route::put('/reviews/{id}', [AdminReviewController::class, 'update'])
+        ->name('reviews.update');
+
+        Route::prefix('admin')->group(function () {
+        Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
+        });
+
+        Route::prefix('admin')->name('admin.')->group(function () {
+
+        Route::get('/reviews/toggle/{id}', 
+            [\App\Http\Controllers\Admin\ReviewController::class, 'toggleStatus']
+        )->name('reviews.toggle');
+
+    });
+
+        Route::delete('/admin/reviews/{id}', [AdminReviewController::class, 'destroy'])
+        ->name('admin.reviews.destroy');
     });

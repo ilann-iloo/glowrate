@@ -3,17 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Review;
 use Illuminate\Http\Request;
+use App\Models\Review;
+
+
 
 class ReviewController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        // [PERUBAHAN] Menampilkan semua review beserta user dan produk
         $reviews = Review::with(['user', 'product'])
             ->latest()
             ->get();
@@ -21,55 +19,50 @@ class ReviewController extends Controller
         return view('admin.reviews.index', compact('reviews'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function toggleStatus($id)
     {
-        // [PERUBAHAN] Admin tidak menambahkan review dari halaman ini
-        abort(404);
+        $review = Review::findOrFail($id);
+
+        $review->status = $review->status === 'Aktif'
+            ? 'Nonaktif'
+            : 'Aktif';
+
+        $review->save();
+
+        return back()->with('success', 'Status review berhasil diubah');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function destroy($id)
     {
-        // [PERUBAHAN] Review dibuat oleh user, bukan admin
-        abort(404);
+        Review::findOrFail($id)->delete();
+
+        return back()->with('success', 'Review berhasil dihapus');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+        public function edit($id)
     {
-        // [PERUBAHAN] Tidak digunakan pada project ini
-        abort(404);
+        $review = Review::findOrFail($id);
+
+        return view('admin.reviews.edit', compact('review'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, $id)
     {
-        // [PERUBAHAN] Tidak digunakan karena admin hanya mengubah status review
-        abort(404);
-    }
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:1000',
+            'status' => 'required'
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        // [PERUBAHAN] Logic update status review akan dibuat pada tahap moderasi review
-    }
+        $review = Review::findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        // [PERUBAHAN] Logic hapus review akan dibuat pada tahap CRUD review
+        $review->update([
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('admin.reviews.index')
+            ->with('success', 'Review berhasil diupdate');
     }
 }

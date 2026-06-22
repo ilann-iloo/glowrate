@@ -105,7 +105,7 @@
                 <label class="form-label">Review</label>
 
                 <textarea
-                    name="content"
+                    name="comment"
                     class="form-control"
                     rows="4"
                     required
@@ -156,7 +156,7 @@
                 </div>
 
                 <p class="text-muted mb-0">
-                    {{ $review->content }}
+                    {{ $review->comment }}
                 </p>
             </div>
         @empty
