@@ -9,35 +9,27 @@ class Product extends Model
     protected $fillable = [
         'category_id',
         'name',
-        'description',
+        'brand',
         'price',
-        'image'
+        'description',
+        'image',
     ];
 
     public function category()
     {
+        // [PERUBAHAN] Produk dimiliki oleh satu kategori
         return $this->belongsTo(Category::class);
     }
 
     public function reviews()
     {
+        // [PERUBAHAN] Satu produk memiliki banyak review
         return $this->hasMany(Review::class);
     }
 
-        // review yang sudah aktif
     public function activeReviews()
     {
-        return $this->hasMany(Review::class)
-            ->where('status', 'Aktif');
-    }
-
-        public function getActiveReviewsCountAttribute()
-    {
-        return $this->activeReviews()->count();
-    }
-
-    public function getAverageRatingAttribute()
-    {
-        return $this->activeReviews()->avg('rating') ?? 0;
+        // [PERUBAHAN] Hanya mengambil review yang sudah disetujui admin
+        return $this->hasMany(Review::class)->where('status', 'Aktif');
     }
 }

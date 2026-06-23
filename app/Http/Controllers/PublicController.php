@@ -16,8 +16,11 @@ class PublicController extends Controller
             ->take(6)
             ->get();
 
-        // [PERUBAHAN] Mengambil semua kategori untuk ditampilkan di menu/filter
-        $categories = Category::latest()->get();
+        // [PERUBAHAN] Mengambil kategori beserta jumlah produknya
+        $categories = Category::withCount('products')
+            ->latest()
+            ->take(4)
+            ->get();
 
         return view('public.home', compact('latestProducts', 'categories'));
     }
@@ -33,14 +36,12 @@ class PublicController extends Controller
         // [PERUBAHAN] Query produk dibuat fleksibel agar bisa search, filter, dan pagination
         $products = Product::with('category')
             ->when($search, function ($query) use ($search) {
-                // [PERUBAHAN] Search berdasarkan nama produk atau merek
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('brand', 'like', '%' . $search . '%');
+                      ->orWhere('brand', 'like', '%' . $search . '%');
                 });
             })
             ->when($categoryId, function ($query) use ($categoryId) {
-                // [PERUBAHAN] Filter produk berdasarkan kategori
                 $query->where('category_id', $categoryId);
             })
             ->latest()
@@ -60,23 +61,20 @@ class PublicController extends Controller
 
     public function productDetail($id)
     {
-        // [PERUBAHAN] Menampilkan detail produk beserta kategori dan review aktif
+        // [PERUBAHAN] Menampilkan detail produk, kategori, dan review aktif
         $product = Product::with([
             'category',
-            'reviews' => function ($query) {
-                $query->where('status', 'Aktif')
-                    ->latest()
-                    ->with('user');
+            'activeReviews' => function ($query) {
+                $query->latest()->with('user');
             }
         ])
-
             // [PERUBAHAN] Menghitung jumlah review aktif
             ->withCount('activeReviews')
 
             // [PERUBAHAN] Menghitung rata-rata rating dari review aktif
             ->withAvg(['activeReviews as average_rating'], 'rating')
-        
-        ->findOrFail($id);
+
+            ->findOrFail($id);
 
         return view('public.product-detail', compact('product'));
     }
@@ -92,15 +90,7 @@ class PublicController extends Controller
             ->latest()
             ->paginate(8);
 
-        $categories = Category::latest()->get();
-
         return view('public.category', compact('category', 'products'));
-    }
-
-    public function about()
-    {
-        // [PERUBAHAN] Menampilkan halaman tentang website
-        return view('public.about');
     }
 
     public function categories()
@@ -111,5 +101,11 @@ class PublicController extends Controller
             ->get();
 
         return view('public.categories', compact('categories'));
+    }
+
+    public function about()
+    {
+        // [PERUBAHAN] Menampilkan halaman tentang website
+        return view('public.about');
     }
 }

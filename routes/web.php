@@ -48,10 +48,8 @@ Route::post('/logout', [AuthController::class, 'logout'])
 // =======================
 
 Route::middleware('auth')->group(function () {
-
     Route::post('/products/{product}/review', [ReviewController::class, 'store'])
         ->name('reviews.store');
-
 });
 
 
@@ -64,44 +62,31 @@ Route::middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
 
-        // DASHBOARD
+        // [PERUBAHAN] Dashboard admin
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
-        // CATEGORY CRUD
-        Route::resource('/categories', CategoryController::class);
+        // [PERUBAHAN] CRUD kategori tanpa halaman show
+        Route::resource('/categories', CategoryController::class)
+            ->except(['show']);
 
-        // PRODUCT CRUD
-        Route::resource('/products', ProductController::class);
+        // [PERUBAHAN] CRUD produk tanpa halaman show
+        Route::resource('/products', ProductController::class)
+            ->except(['show']);
 
-        // REVIEW MANAGEMENT
+        // [PERUBAHAN] Kelola review admin
         Route::get('/reviews', [AdminReviewController::class, 'index'])
             ->name('reviews.index');
 
         Route::get('/reviews/toggle/{id}', [AdminReviewController::class, 'toggleStatus'])
             ->name('reviews.toggle');
 
-        Route::delete('/reviews/{id}', [AdminReviewController::class, 'destroy'])
-            ->name('reviews.destroy');
-
         Route::get('/reviews/{id}/edit', [AdminReviewController::class, 'edit'])
-        ->name('reviews.edit');
+            ->name('reviews.edit');
 
         Route::put('/reviews/{id}', [AdminReviewController::class, 'update'])
-        ->name('reviews.update');
+            ->name('reviews.update');
 
-        Route::prefix('admin')->group(function () {
-        Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
-        });
-
-        Route::prefix('admin')->name('admin.')->group(function () {
-
-        Route::get('/reviews/toggle/{id}', 
-            [\App\Http\Controllers\Admin\ReviewController::class, 'toggleStatus']
-        )->name('reviews.toggle');
-
-    });
-
-        Route::delete('/admin/reviews/{id}', [AdminReviewController::class, 'destroy'])
-        ->name('admin.reviews.destroy');
+        Route::delete('/reviews/{id}', [AdminReviewController::class, 'destroy'])
+            ->name('reviews.destroy');
     });

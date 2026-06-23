@@ -18,7 +18,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table align-middle">
+            <table class="table align-middle" id="categoryTable">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -44,15 +44,12 @@
                                 <form
                                     action="{{ route('admin.categories.destroy', $category->id) }}"
                                     method="POST"
-                                    class="d-inline">
+                                    class="action-form delete-form">
 
                                     @csrf
                                     @method('DELETE')
  
-                                    <button
-                                        type="submit"
-                                        class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Yakin ingin menghapus kategori ini?')">
+                                    <button type="submit" class="btn btn-danger btn-sm">
                                         Hapus
                                     </button>
                                 </form>
@@ -70,3 +67,45 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        $('#categoryTable').DataTable({
+            pageLength: 10,
+            language: {
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_ data",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                infoEmpty: "Tidak ada data",
+                zeroRecords: "Data tidak ditemukan",
+                paginate: {
+                    first: "Pertama",
+                    last: "Terakhir",
+                    next: "Selanjutnya",
+                    previous: "Sebelumnya"
+                }
+            }
+        });
+    });
+
+    $('.delete-form').on('submit', function (event) {
+        event.preventDefault();
+
+        const form = this;
+
+        Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            text: 'Data kategori yang dihapus tidak dapat dikembalikan.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+</script>
+@endpush

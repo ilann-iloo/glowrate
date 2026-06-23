@@ -24,10 +24,10 @@
             </select>
         </div>
 
-        {{-- COMMENT --}}
+        {{-- content --}}
         <div class="mb-3">
             <label class="form-label">Komentar</label>
-            <textarea name="comment" class="form-control" rows="4" required>{{ $review->comment }}</textarea>
+            <textarea name="content" class="form-control" rows="4" required>{{ $review->content }}</textarea>
         </div>
 
         {{-- STATUS --}}

@@ -7,6 +7,9 @@
 
     {{-- [PERUBAHAN] Bootstrap --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    {{-- [PERUBAHAN] DataTables CSS --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
 
     {{-- [PERUBAHAN] CSS admin melalui Vite --}}
     @vite(['resources/css/admin.css'])
@@ -74,25 +77,46 @@
             </header>
 
             <main class="admin-main">
-                {{-- [PERUBAHAN] Menampilkan pesan dari session --}}
-                @if (session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
                 @yield('content')
             </main>
         </section>
     </div>
 
+    {{-- [PERUBAHAN] Bootstrap JS --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+{{-- [PERUBAHAN] jQuery untuk DataTables --}}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+{{-- [PERUBAHAN] DataTables JS --}}
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+
+{{-- [PERUBAHAN] SweetAlert2 --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- [PERUBAHAN] Script SweetAlert untuk pesan sukses dan error --}}
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: "{{ session('success') }}",
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: "{{ session('error') }}",
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
 
     @stack('scripts')
 </body>

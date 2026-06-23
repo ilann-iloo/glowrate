@@ -140,16 +140,24 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        $product = Product::findOrFail($id);
+    $product = Product::findOrFail($id);
 
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
-        }
-
-        $product->delete();
-
+    // [PERUBAHAN] Produk tidak boleh dihapus jika masih memiliki review
+    if ($product->reviews()->count() > 0) {
         return redirect()
             ->route('admin.products.index')
-            ->with('success', 'Produk berhasil dihapus.');
+            ->with('error', 'Produk tidak dapat dihapus karena masih memiliki review.');
+    }
+
+    // [PERUBAHAN] Menghapus gambar produk jika ada
+    if ($product->image) {
+        Storage::disk('public')->delete($product->image);
+    }
+
+    $product->delete();
+
+    return redirect()
+        ->route('admin.products.index')
+        ->with('success', 'Produk berhasil dihapus.');
     }
 }
