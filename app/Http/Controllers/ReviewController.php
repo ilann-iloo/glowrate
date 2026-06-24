@@ -11,13 +11,20 @@ class ReviewController extends Controller
 {
     public function store(Request $request, Product $product)
     {
-        // [PERUBAHAN] Validasi input review dari user
+        // Cegah admin memberikan review
+        if (Auth::user()->role !== 'user') {
+            return redirect()
+                ->route('products.detail', $product->id)
+                ->with('error', 'Admin tidak dapat memberikan review.');
+        }
+
+        // Validasi input review
         $request->validate([
             'rating' => ['required', 'integer', 'min:1', 'max:5'],
             'content' => ['required', 'string', 'max:1000'],
         ]);
 
-        // [PERUBAHAN] Review langsung Aktif karena tidak perlu persetujuan admin
+        // Simpan review
         Review::create([
             'user_id' => Auth::id(),
             'product_id' => $product->id,
