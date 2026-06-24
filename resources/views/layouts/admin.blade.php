@@ -37,6 +37,10 @@
                     Kelola Produk
                 </a>
 
+                <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                    Kelola User
+                </a>
+
                 <a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
                     Kelola Review
                 </a>

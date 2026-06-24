@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Admin\UserController;
 
 // =======================
 // PUBLIC ROUTES
@@ -92,4 +93,10 @@ Route::middleware(['auth', 'admin'])
 
         Route::delete('/reviews/{id}', [AdminReviewController::class, 'destroy'])
             ->name('reviews.destroy');
+
+        Route::get('/users', [UserController::class, 'index'])
+            ->name('users.index');
+
+        Route::delete('/users/{id}', [UserController::class, 'destroy'])
+            ->name('users.destroy');
     });
