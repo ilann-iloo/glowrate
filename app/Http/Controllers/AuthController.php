@@ -72,6 +72,39 @@ class AuthController extends Controller
             ->with('success', 'Registrasi berhasil. Silahkan login.');
     }
 
+    public function showForgotPassword()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+
+            return back()->withErrors([
+                'email' => 'Email tidak ditemukan.'
+            ]);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        return redirect()
+            ->route('login')
+            ->with(
+                'success',
+                'Password berhasil diubah. Silakan login.'
+            );
+    }
+
     public function logout(Request $request)
     {
         // [PERUBAHAN] Logout user/admin

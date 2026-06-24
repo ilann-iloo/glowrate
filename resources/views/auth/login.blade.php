@@ -59,6 +59,7 @@
             </div>
 
             <div class="d-flex justify-content-between align-items-center mb-4">
+
                 <div class="form-check">
                     <input 
                         class="form-check-input" 
@@ -70,6 +71,13 @@
                         Ingat saya
                     </label>
                 </div>
+
+                <a
+                    href="{{ route('forgot.password') }}"
+                    class="small text-decoration-none">
+                    Lupa Password?
+                </a>
+
             </div>
 
             <button type="submit" class="btn btn-main w-100 py-2">
