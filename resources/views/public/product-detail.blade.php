@@ -239,9 +239,33 @@
 
                 </div>
 
-                <p class="review-content-text mb-0">
-                    {{ $review->content }}
-                </p>
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+
+                    <p class="review-content-text mb-0 flex-grow-1">
+                        {{ $review->content }}
+                    </p>
+
+                    @auth
+                        @if(auth()->id() === $review->user_id)
+                            <form
+                                action="{{ route('reviews.destroy', $review->id) }}"
+                                method="POST"
+                                class="delete-review-form"
+                            >
+                                @csrf
+                                @method('DELETE')
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-sm btn-outline-danger"
+                                >
+                                    Hapus
+                                </button>
+                            </form>
+                        @endif
+                    @endauth
+
+                </div>
 
             </div>
 
@@ -258,4 +282,33 @@
     </div>
 
 </div>
+
+    @push('scripts')
+    <script>
+    document.querySelectorAll('.delete-review-form').forEach(form => {
+
+        form.addEventListener('submit', function(e) {
+
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Hapus review?',
+                text: 'Review yang dihapus tidak dapat dikembalikan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+
+                if(result.isConfirmed){
+                    form.submit();
+                }
+
+            });
+
+        });
+
+    });
+    </script>
+    @endpush
 @endsection

@@ -37,4 +37,20 @@ class ReviewController extends Controller
             ->route('products.detail', $product->id)
             ->with('success', 'Review berhasil dikirim.');
     }
+
+    public function destroy(Review $review)
+    {
+        // Pastikan review milik user yang sedang login
+        if ($review->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $productId = $review->product_id;
+
+        $review->delete();
+
+        return redirect()
+            ->route('products.detail', $productId)
+            ->with('success', 'Review berhasil dihapus.');
+    }
 }

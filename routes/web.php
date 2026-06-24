@@ -52,8 +52,12 @@ Route::post('/logout', [AuthController::class, 'logout'])
 // =======================
 
 Route::middleware('auth')->group(function () {
+
     Route::post('/products/{product}/review', [ReviewController::class, 'store'])
         ->name('reviews.store');
+
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])
+        ->name('reviews.destroy');
 });
 
 
