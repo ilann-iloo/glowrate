@@ -1,0 +1,40 @@
+GLOWRATE
+│
+├── app
+│   ├── Http
+│   │   ├── Controllers
+│   │   │   └───Admin
+│   │   └── Middleware
+│   │
+│   ├── Providers
+│   └── Models
+│
+├── bootstrap
+├── config
+├── database
+│   ├── factories
+│   ├── migrations
+│   └── seeders
+│
+├── public
+│   └── storage
+│
+├── routes
+│
+├── resources
+│   ├── css
+│   ├── js
+│   └── views
+│       ├── layouts
+│       ├── public
+│       ├── auth
+│       ├── public
+│       ├─── partials
+│       └── admin
+│
+├── storage
+│   └── app
+│       └── framework
+│           └── logs
+│
+└── README.md

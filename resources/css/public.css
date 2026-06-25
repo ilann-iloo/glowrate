@@ -1,0 +1,402 @@
+/* [PERUBAHAN] Style utama halaman publik GlowRate */
+
+:root {
+    --primary: #b35b6a;
+    --primary-dark: #984b59;
+    --primary-soft: #ffe4df;
+    --bg-soft: #fff8f6;
+    --text-dark: #2f2f2f;
+    --text-muted: #6c757d;
+    --border-soft: #f1d8d2;
+    --white: #ffffff;
+}
+
+body {
+    background-color: var(--bg-soft);
+    color: var(--text-dark);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+.navbar-public {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.navbar-brand {
+    font-weight: 800;
+    color: var(--primary) !important;
+    letter-spacing: 0.3px;
+}
+
+.nav-link {
+    color: #444 !important;
+    font-weight: 500;
+}
+
+.nav-link.active,
+.nav-link:hover {
+    color: var(--primary) !important;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #ffe4df, #ffffff);
+    border-radius: 28px;
+    padding: 60px 36px;
+}
+
+.hero-label {
+    display: inline-block;
+    background-color: var(--white);
+    color: var(--primary);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.section-title {
+    font-weight: 800;
+    color: var(--text-dark);
+}
+
+.text-main {
+    color: var(--primary);
+}
+
+.btn-main {
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+}
+
+.btn-main:hover {
+    background-color: var(--primary-dark);
+    color: var(--white);
+}
+
+.btn-outline-main {
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    background-color: transparent;
+}
+
+.btn-outline-main:hover {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.soft-card {
+    background-color: var(--white);
+    border: 1px solid rgba(241, 216, 210, 0.7);
+    border-radius: 22px;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.05);
+}
+
+.product-card {
+    border: none;
+    border-radius: 22px;
+    overflow: hidden;
+    height: 100%;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+    transition: 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.10);
+}
+
+.product-image {
+    height: 220px;
+    object-fit: cover;
+    background-color: #f6e7e4;
+}
+
+.product-placeholder {
+    height: 220px;
+    background: linear-gradient(135deg, #f6e7e4, #fff3f0);
+    color: #9b6b72;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    text-align: center;
+}
+
+.badge-category {
+    background-color: var(--primary-soft);
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.price-text {
+    color: var(--primary);
+    font-weight: 800;
+}
+
+.empty-state {
+    background-color: var(--white);
+    border: 1px dashed var(--border-soft);
+    border-radius: 22px;
+    padding: 36px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.footer {
+    background-color: var(--white);
+    border-top: 1px solid var(--border-soft);
+    margin-top: 70px;
+    padding: 32px 0;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.15rem rgba(179, 91, 106, 0.2);
+}
+
+.pagination {
+    gap: 6px;
+}
+
+.page-link {
+    color: var(--primary);
+    border-radius: 10px;
+    border: 1px solid var(--border-soft);
+}
+
+.page-item.active .page-link {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 40px 24px;
+    }
+
+    .hero-section h1 {
+        font-size: 32px;
+    }
+
+    .product-image,
+    .product-placeholder {
+        height: 200px;
+    }
+}
+
+/* ============================
+   Product Detail
+============================ */
+
+.product-detail-page {
+    padding-top: 8px;
+}
+
+/* INI YANG DIPERBAIKI — padding sekarang di luar media query, berlaku semua ukuran layar */
+.product-image-card,
+.product-info-card,
+.review-form-card,
+.review-list-card {
+    border-radius: 28px;
+    padding: 28px 32px !important;
+}
+
+.product-detail-image {
+    width: 100%;
+    height: 440px;
+    object-fit: cover;
+    border-radius: 22px;
+    display: block;
+}
+
+.product-category-badge {
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+.product-detail-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 10px;
+    color: #1f2937;
+}
+
+.product-detail-brand {
+    font-size: 1.15rem;
+    color: #6b7280;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.product-detail-price {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin-bottom: 24px;
+}
+
+.product-meta-wrap {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.product-meta-item {
+    background-color: #fff7f5;
+    border: 1px solid #f1d8d2;
+    border-radius: 18px;
+    padding: 16px 18px;
+}
+
+.product-meta-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #7b7280;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.product-meta-value {
+    display: block;
+    font-size: 1.1rem;
+    color: #b35b6a;
+    font-weight: 800;
+}
+
+.product-description-box {
+    border-top: 1px solid #f1d8d2;
+    padding-top: 20px;
+}
+
+.section-title {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: #1f2937;
+}
+
+.product-description-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #4b5563;
+}
+
+.review-label {
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.review-input {
+    border-radius: 14px;
+    padding: 12px 14px;
+    border: 1px solid #d9d9d9;
+    font-size: 1rem;
+}
+
+.review-textarea {
+    resize: vertical;
+    min-height: 130px;
+}
+
+.review-count-badge {
+    background-color: #ffe4df;
+    color: #b35b6a;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.single-review-item {
+    padding: 20px 0;
+    border-bottom: 1px solid #f1d8d2;
+}
+
+.single-review-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.review-user-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.review-rating-chip {
+    display: inline-block;
+    background-color: #fff1ee;
+    color: #b35b6a;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.review-content-text {
+    color: #4b5563;
+    line-height: 1.8;
+    font-size: 0.98rem;
+}
+
+.empty-review-box {
+    background-color: #fff8f6;
+    border: 1px dashed #f1d8d2;
+    border-radius: 18px;
+    padding: 24px;
+    text-align: center;
+}
+
+/* ============================
+   Responsive
+============================ */
+
+@media (max-width: 991.98px) {
+    .product-detail-title {
+        font-size: 2rem;
+    }
+
+    .product-detail-price {
+        font-size: 1.9rem;
+    }
+
+    .product-detail-image {
+        height: 340px;
+    }
+
+    .product-meta-wrap {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .product-detail-title {
+        font-size: 1.7rem;
+    }
+
+    .section-title {
+        font-size: 1.45rem;
+    }
+
+    .product-image-card,
+    .product-info-card,
+    .review-form-card,
+    .review-list-card {
+        padding: 20px;
+    }
+
+    .product-detail-image {
+        height: 260px;
+    }
+}
